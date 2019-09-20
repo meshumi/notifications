@@ -1,0 +1,21 @@
+---
+
+# Init Role (required) --------------------------------------------------------
+
+hostname: "notifications"
+timezone: "Europe/Kiev"
+deployer_password: "$1$wm4RrCho$4pWGjyNTHJgPir6AkKNFv1"
+ssh_keys:
+  - "{{ lookup('file', 'keys/mistin.pub') }}"
+
+# nginx -----------------------------------------------------------------------
+
+server_name: "notifications"
+www_dir: "/home/www/{{ server_name }}"
+
+# Ruby / PostgresSQL ----------------------------------------------------------
+
+postgresql:
+  user: "deployer"
+  password: "f62fee1b43f48bd0c1bf9b7d5b22f270" # deployer
+  dbname: "notifications_production"

@@ -1,0 +1,31 @@
+---
+  - name: install
+    apt:
+      name: "{{ item }}"
+      state: latest
+      update_cache: yes
+    with_items:
+      - python-psycopg2
+      - postgresql
+      - postgresql-common
+      - postgresql-client
+      - postgresql-contrib
+      - libpq-dev
+
+  - name: create a new database
+    postgresql_db:
+      name: "{{ postgresql.dbname }}"
+      encoding: 'UTF-8'
+      state: present
+    become: true
+    become_user: postgres
+
+  - name: create a user
+    postgresql_user:
+      db: "{{ postgresql.dbname }}"
+      name: "{{ postgresql.user }}"
+      password: "{{ postgresql.password }}"
+      priv: "ALL"
+      state: present
+    become: true
+    become_user: postgres

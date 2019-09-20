@@ -1,0 +1,307 @@
+// scss-lint:disable SelectorFormat, ImportantRule, ColorVariable, IdSelector, QualifyingElement
+
+.note-editor {
+  @import 'bootstrap-sprockets';
+  @import 'bootstrap';
+}
+
+@import 'summernote';
+@import 'font-awesome';
+@import 'jquery-ui';
+@import 'jquery-ui.theme';
+@import 'active_admin/mixins';
+@import 'active_admin/base';
+@import "active_admin_datetimepicker";
+
+body {
+  font-size: 80%;
+}
+
+img,
+iframe {
+  display: block;
+  max-width: 100%;
+}
+
+// Tables hacks -------------------------------------------------------------------------------------------------------
+
+.col-id { width: 20px; }
+.col-selectable { width: 20px; }
+.col-actions { width: 20px; }
+.col-translations { width: 70px; }
+
+.col-created_at,
+.col-updated_at,
+.col-modified_at {
+  width: 150px;
+}
+
+.col-thumb { width: 100px; }
+.col-user { width: 50px; }
+
+tr .col-actions { text-align: right; }
+
+// scss-lint:disable IdSelector
+#title_bar {
+  h2 { font-size: 1.6em; }
+
+  #titlebar_left,
+  #titlebar_right {
+    width: 80%;
+  }
+}
+ scss-lint:enable IdSelector
+
+// Other hacks --------------------------------------------------------------------------------------------------------
+
+.disabled_button {
+  background-color: #808080 !important;
+  cursor: default !important;
+  opacity: .5 !important;
+}
+
+.filter_form {
+  .string {
+    clear: both;
+    list-style: none;
+    margin-bottom: 10px;
+  }
+
+  abbr {
+    display: none;
+  }
+}
+
+#active_admin_content #main_content_wrapper {
+  padding: 0 0 60px;
+}
+
+.status_tag {
+  border-radius: 2px;
+  letter-spacing: .1em;
+  padding: 3px 5px;
+}
+
+.horizontal_check_boxes input[type=checkbox] {
+  margin: 0 4px 0 0;
+}
+
+.categories-list .choice label {
+  width: 10%;
+}
+
+form fieldset ol > li label.label {
+  display: block;
+  width: 20%;
+  float: left;
+  font-size: 1.0em;
+  font-weight: bold;
+  color: #5E6469;
+}
+
+form input[type=submit],
+form input[type=button],
+form button,
+form fieldset.buttons li.cancel a,
+form fieldset.actions li.cancel a,
+form.filter_form a.clear_filters_btn,
+a.button,
+a:link.button,
+a:visited.button,
+input[type=submit],
+input[type=button],
+button
+a.table_tools_button,
+a.table_tools_button.disabled,
+.table_tools .dropdown_menu_button,
+.table_tools .dropdown_menu_button.disabled,
+#title_bar .action_items span.action_item > a,
+#title_bar .action_items span.action_item > .dropdown_menu > a {
+  border-radius: 3px;
+}
+
+.categories-list .choice label,
+.categories-list form fieldset ol > li label {
+  width: auto;
+  margin: 0 20px 0 0;
+}
+
+
+// Summernote ---------------------------------------------------------------------------------------------------------
+
+.tooltip {
+  display: none !important;
+}
+
+.note-editor {
+  margin: 0 0 0 20%;
+  border: 1px solid #c9d0d6;
+  border-radius: 3px;
+
+  &.fullscreen {
+    margin: 0;
+  }
+
+  .modal-header .close,
+  .close:hover,
+  .close:focus {
+    padding: 0 5px 3px;
+  }
+
+  .dropdown-menu a {
+    text-decoration: none;
+  }
+
+  .btn-default {
+    background: #fff;
+    border: 1px solid #c9d0d6;
+    box-shadow: none;
+    font-weight: normal;
+    margin: 0;
+    text-shadow: none;
+  }
+
+  .btn-default:hover,
+  .btn-default:focus,
+  .btn-default.focus,
+  .btn-default:active,
+  .btn-default.active {
+    background: #fff;
+  }
+
+  .btn-toolbar {
+    margin: 0;
+  }
+
+  .note-toolbar {
+    border-bottom: 1px solid #c9d0d6;
+    border-radius: 3px 3px 0 0;
+  }
+
+  .note-editable {
+    background: #fff;
+    border-radius: 0 0 3px 3px;
+    font-size: 1rem;
+  }
+}
+
+// Tags ---------------------------------------------------------------------------------------------------------------
+
+div.tagsinput {
+    border: 1px solid #c9d0d6;
+    background: #FFF;
+    padding: 5px 5px 0px 5px;
+    width: auto;
+    height: auto;
+    border-radius: 3px;
+    overflow-y: auto;
+}
+
+div.tagsinput span.tag {
+    // border: 1px solid #a5d24a;
+    border-radius: 2px;
+    display: block;
+    float: left;
+    padding: 2px 8px;
+    text-decoration: none;
+    background: #cde69c;
+    color: #638421;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+div.tagsinput span.tag a {
+    font-weight: 700;
+    color: #82ad2b;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 12px;
+}
+
+div.tagsinput input {
+    width: 200px;
+    margin: 0 5px 0 0;
+    border: 1px solid transparent;
+    padding: 5px;
+    outline: 0;
+    font-size: 0.95em;
+}
+
+div.tagsinput div {
+    display: block;
+    float: left
+}
+
+.tags_clear {
+    clear: both;
+    width: 100%;
+    height: 0
+}
+
+.not_valid {
+    background: #FBD8DB!important;
+    color: #90111A!important
+}
+
+.meta-description .inline-hints {
+  color: #f90;
+  font-weight: bold;
+  font-style: normal;
+  margin: 0 0 0 20%;
+}
+
+.my-image-size {
+  width: 160px;
+}
+
+.my-image-big-size {
+  width: 120px;
+}
+
+.my-image-height-size {
+  width: 90px;
+}
+//
+//button:not(.disabled):hover,
+//button:not(.disabled):active {
+//  box-shadow: none;
+//  border-radius: initial;
+//  background-color: inherit;
+//  background-image: none;
+//}
+
+
+
+.avatar{
+  .avatar-form{
+    display: none;
+  }
+}
+.crop-container{
+  .cropbox{
+    float: left;
+    margin-right: 50px;
+    .jcrop-keymgr {
+      opacity: 0;
+    }
+    img {
+    }
+  }
+  .avatar-preview-height {
+    width: 200px;
+    height: 476px;
+    overflow: hidden;
+  }
+  .avatar-preview-big,
+  .avatar-preview-medium,
+  .avatar-preview-small {
+    width: 266px;
+    height: 200px;
+    overflow: hidden;
+  }
+}
+.crop-container {
+  img {
+    max-width: inherit;
+  }
+}

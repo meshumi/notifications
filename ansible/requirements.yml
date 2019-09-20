@@ -1,0 +1,6 @@
+- name: rvm
+  src: https://github.com/rvm/rvm1-ansible
+  version: origin/master
+- name: locales
+  src: https://github.com/Oefenweb/ansible-locales
+  version: origin/master

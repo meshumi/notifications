@@ -1,0 +1,10 @@
+---
+- hosts: web
+  remote_user: root
+  vars_files:
+    - config.yml
+  roles:
+    - postgresql
+    - role: nginx
+      server_type: "rails"
+    - monit

@@ -1,0 +1,2 @@
+class VapidKey < ApplicationRecord
+end

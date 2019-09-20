@@ -1,0 +1,10 @@
+---
+  - name: start exim4
+    service:
+      name: exim4
+      state: started
+
+  - name: restart exim4
+    service:
+      name: exim4
+      state: restarted

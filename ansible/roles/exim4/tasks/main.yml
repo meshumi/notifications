@@ -1,0 +1,19 @@
+---
+  - name: install
+    apt:
+      name: "{{ item }}"
+      state: latest
+      update_cache: yes
+    with_items:
+      - exim4
+      - exim4-config
+
+  - name: update configuration
+    template:
+      src: "update-exim4.conf.conf"
+      dest: "/etc/exim4/update-exim4.conf.conf"
+      owner: root
+      group: root
+      mode: 0644
+    notify:
+      - restart exim4

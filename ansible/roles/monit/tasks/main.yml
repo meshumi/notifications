@@ -1,0 +1,63 @@
+---
+  - name: install
+    apt:
+      name: monit
+      state: latest
+      update_cache: yes
+    notify:
+      - start monit
+    tags: monit
+
+  - name: create configuration for monit
+    template:
+      src: monitrc
+      dest: /etc/monit/monitrc
+      mode: 0700
+    notify:
+      - restart monit
+    tags: monit
+
+  - name: create configuration for exim
+    template:
+      src: exim.conf
+      dest: /etc/monit/conf.d/exim.conf
+      mode: 0644
+    notify:
+      - restart monit
+    tags: monit
+
+  - name: create configuration for nginx
+    template:
+      src: nginx.conf
+      dest: /etc/monit/conf.d/nginx.conf
+      mode: 0644
+    notify:
+      - restart monit
+    tags: monit
+
+  - name: create configuration for postgresql
+    template:
+      src: postgresql.conf
+      dest: /etc/monit/conf.d/postgresql.conf
+      mode: 0644
+    notify:
+      - restart monit
+    tags: monit
+
+  - name: create configuration for puma
+    template:
+      src: puma.conf
+      dest: /etc/monit/conf.d/puma.conf
+      mode: 0644
+    notify:
+      - restart monit
+    tags: monit
+
+  - name: create configuration for sshd
+    template:
+      src: sshd.conf
+      dest: /etc/monit/conf.d/sshd.conf
+      mode: 0644
+    notify:
+      - restart monit
+    tags: monit

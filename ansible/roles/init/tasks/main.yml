@@ -1,0 +1,151 @@
+---
+  - name: rename host
+    hostname:
+      name: "{{ hostname }}"
+
+  - name: add host to /etc/hosts
+    lineinfile:
+      dest: /etc/hosts
+      line: "127.0.0.1 {{ hostname }}"
+      state: present
+
+  - name: set timezone variables
+    copy:
+      content: "{{ timezone }}"
+      dest: /etc/timezone
+      owner: root
+      group: root
+      mode: 0644
+      backup: yes
+    notify:
+      - update timezone
+
+  - name: setup root user
+    user:
+      name: root
+      shell: /bin/zsh
+
+  - name: create deployer user
+    user:
+      name: deployer
+      shell: /bin/zsh
+      groups: sudo
+      password: "{{ deployer_password }}"
+
+  - name: update apt cache
+    apt: update_cache=yes
+
+  - name: install or upgrade required packages
+    apt: name={{ item }} state=latest
+    with_items:
+      - build-essential
+      - curl
+      - git
+      - htop
+      - mc
+      - most
+      - openssh-server
+      - tmux
+      - vim
+      - wget
+      - zsh
+      - nodejs
+      - libgmp-dev
+      - imagemagick
+      - libmagickcore-dev
+      - libmagickwand-dev
+
+  - name: add users ssh keys
+    authorized_key:
+      user: deployer
+      key: "{{ item }}"
+      state: present
+    with_items:
+      "{{ ssh_keys }}"
+
+  - name: check ed25519 file exists
+    stat: path=/etc/ssh/ssh_host_ed25519_key
+    register: ed25519
+
+  - name: generate missing SSH keys
+    shell: ssh-keygen -q -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N ''
+    when: not ed25519.stat.exists
+
+  - name: change sshd.conf
+    template:
+      src: sshd_config
+      dest: /etc/ssh/sshd_config
+      owner: root
+      group: root
+      mode: 0644
+    notify: restart ssh
+
+  - name: install oh-my-zsh
+    git:
+      repo: https://github.com/robbyrussell/oh-my-zsh.git
+      dest: ~/.oh-my-zsh
+    remote_user: deployer
+
+  - name: setup .zshrc
+    template:
+      src: zshrc
+      dest: ~/.zshrc
+      mode: 0644
+    remote_user: deployer
+
+  - name: setup .tmux.conf
+    template:
+      src: tmux.conf
+      dest: ~/.tmux.conf
+      mode: 0644
+    remote_user: deployer
+
+  - name: setup tmux-session
+    template:
+      src: tmux-session
+      dest: ~/tmux-session
+      mode: 0644
+    remote_user: deployer
+
+  - name: create rvm directory
+    file:
+      path: /usr/local/rvm
+      state: directory
+      owner: deployer
+      recurse: yes
+    tags: rvm
+
+  - name: create swapfile
+    command: fallocate -l 4G /swapfile
+    args:
+      creates: /swapfile
+    register: swapfile
+    tags: swapfile
+
+  - name: set swapfile permissions
+    file:
+      path: /swapfile
+      mode: 600
+      owner: root
+      group: root
+    when: swapfile.changed
+    tags: swapfile
+
+  - name: setup swapfile
+    command: mkswap /swapfile
+    register: mkswap_swapfile
+    when: swapfile.changed
+    tags: swapfile
+
+  - name: enable swapfile
+    command: swapon /swapfile
+    when: mkswap_swapfile.changed
+    tags: swapfile
+
+  - name: add swapfile to /etc/fstab
+    lineinfile:
+      dest: /etc/fstab
+      line: "/swapfile none swap sw 0 0"
+      state: present
+    when: swapfile.changed
+    tags: swapfile

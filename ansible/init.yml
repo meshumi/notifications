@@ -1,0 +1,20 @@
+---
+- hosts: all
+  remote_user: root
+  vars_files:
+    - config.yml
+  roles:
+    - role: init
+      tags: init
+    - exim4
+    - locales
+    - role: rvm
+      rvm1_rvm_version: 'stable'
+      rvm1_rvm_check_for_updates: true
+      rvm1_user: 'deployer'
+      rvm1_rubies:
+        - 'ruby-2.6.4'
+      tags: rvm
+
+  vars:
+    locale: "en_US.UTF-8"

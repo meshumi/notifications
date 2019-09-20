@@ -1,0 +1,9 @@
+#!/bin/bash
+
+tmux new-session -d -s {{ hostname }} -n 'htop' 'htop'
+
+tmux new-window -t {{ hostname }}:2 -d -n 'mc' 'mc'
+tmux new-window -t {{ hostname }}:3 -d -n 'terminal'
+
+tmux select-window -t {{ hostname }}:3
+tmux -2 attach-session -t {{ hostname }}

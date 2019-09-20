@@ -1,0 +1,20 @@
+export ZSH=$HOME/.oh-my-zsh
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+ZSH_THEME="gentoo"
+DISABLE_AUTO_UPDATE="true"
+ENABLE_CORRECTION="false"
+HIST_STAMPS="mm/dd/yyyy"
+
+plugins=(git gem bundler rvm ruby rails)
+
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+source $ZSH/oh-my-zsh.sh
+
+export PAGER="most"
+export EDITOR='vim'
+
+if [[ -z $TMUX && -n $SSH_TTY ]]; then
+    tmux attach -t {{ hostname }} || sh ~/tmux-session; exit
+fi
