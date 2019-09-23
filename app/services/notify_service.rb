@@ -8,21 +8,25 @@ class NotifyService
 
   def send_notification
     @domain.notification_receivers.find_each do |receiver|
-      binding.pry
-      Webpush.payload_send(
-        message: JSON.generate(json_message),
-        endpoint: receiver.endpoint,
-        p256dh: receiver.p256dh,
-        auth: receiver.auth,
-        vapid: {
-          subject: "mailto:sender@#{@domain.name}",
-          public_key: vapid_key.public_key,
-          private_key: vapid_key.private_key
-        },
-        ssl_timeout: 5,
-        open_timeout: 5,
-        read_timeout: 5
-      )
+      begin
+        Webpush.payload_send(
+          message: JSON.generate(json_message),
+          endpoint: receiver.endpoint,
+          p256dh: receiver.p256dh,
+          auth: receiver.auth,
+          vapid: {
+            subject: "mailto:sender@#{@domain.name}",
+            public_key: vapid_key.public_key,
+            private_key: vapid_key.private_key
+          },
+          ssl_timeout: 5,
+          open_timeout: 5,
+          read_timeout: 5
+        )
+      rescue Webpush::InvalidSubscription => e
+        message = "host: fcm.googleapis.com, #<Net::HTTPGone 410 Gone readbody=true>\nbody:\npush subscription has unsubscribed or expired.\n"
+        receiver.destroy if message == e.message
+      end
     end
     mark_post_as_posted
   end

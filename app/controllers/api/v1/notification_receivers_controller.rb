@@ -2,7 +2,7 @@ module Api
   module V1
     class NotificationReceiversController < ApiController
       def create
-        record = NotificationReceiver.new(simplify_params)
+        record = NotificationReceiver.find_or_create_by(simplify_params)
         record.domain = Domain.find_by(name: params[:domain])
         if record.save
           render json: :created, status: :ok
